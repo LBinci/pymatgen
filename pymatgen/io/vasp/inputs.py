@@ -2765,6 +2765,26 @@ class VaspInput(dict, MSONable):
             output.extend((key, str(val), ""))
         return "\n".join(output)
 
+    @property
+    def incar(self) -> Incar:
+        """INCAR object."""
+        return self["INCAR"]
+
+    @property
+    def kpoints(self) -> Kpoints:
+        """KPOINTS object."""
+        return self["KPOINTS"]
+
+    @property
+    def poscar(self) -> Poscar:
+        """POSCAR object."""
+        return self["POSCAR"]
+
+    @property
+    def potcar(self) -> Potcar:
+        """POTCAR object."""
+        return self["POTCAR"]
+
     def as_dict(self) -> dict:
         """MSONable dict."""
         dct = {key: val.as_dict() for key, val in self.items()}

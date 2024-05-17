@@ -426,7 +426,13 @@ class UCorrection(Correction):
     common_superoxides = ("LiO2", "NaO2", "KO2", "RbO2", "CsO2")
     ozonides = ("LiO3", "NaO3", "KO3", "NaO5")
 
-    def __init__(self, config_file, input_set, compat_type, error_file=None):
+    def __init__(
+        self,
+        config_file: str,
+        input_set: type[VaspInputSet],
+        compat_type: str,
+        error_file: str | None = None,
+    ) -> None:
         """
         Args:
             config_file: Path to the selected compatibility.yaml config file.

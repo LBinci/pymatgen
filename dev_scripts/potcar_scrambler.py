@@ -141,7 +141,7 @@ def generate_fake_potcar_libraries() -> None:
     need a library of fake POTCARs which do not violate copyright
     """
     mp_relax_set = _load_yaml_config("MPRelaxSet")
-    psp_variants = [mp_relax_set["POTCAR"][element] for element in mp_relax_set["POTCAR"]]
+    psp_variants = list(mp_relax_set["POTCAR"].values())
 
     output_dir = "./fake_potcar_library/"
     shutil.rmtree(output_dir, ignore_errors=True)

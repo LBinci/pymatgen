@@ -200,7 +200,7 @@ class VaspInputSet(InputGenerator, abc.ABC):
 
         cif_name = ""
         if include_cif and vasp_input is not None:
-            struct = vasp_input["POSCAR"].structure
+            struct = vasp_input.poscar.structure
             cif_name = f"{output_dir}/{struct.formula.replace(' ', '')}.cif"
             struct.to(filename=cif_name)
 
@@ -1118,7 +1118,7 @@ class DictSet(VaspInputSet):
         elif self.incar.get("ENCUT", 0) > 0:
             encut = self.incar["ENCUT"]  # get the ENCUT val
         else:
-            encut = max(i_species.enmax for i_species in self.get_vasp_input()["POTCAR"])
+            encut = max(species.enmax for species in self.get_vasp_input().potcar)
 
         # PREC=Normal is VASP default
         PREC = self.incar.get("PREC", "Normal") if custom_prec is None else custom_prec

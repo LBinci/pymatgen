@@ -504,12 +504,12 @@ class TestMITMPRelaxSet(PymatgenTest):
     @skip_if_no_psp_dir
     def test_get_vasp_input(self):
         dct = self.mit_set.get_vasp_input()
-        assert dct["INCAR"]["ISMEAR"] == -5
+        assert dct.incar["ISMEAR"] == -5
         struct = self.structure.copy()
         struct.make_supercell(4)
         relax_set = MPRelaxSet(struct)
         dct = relax_set.get_vasp_input()
-        assert dct["INCAR"]["ISMEAR"] == 0
+        assert dct.incar["ISMEAR"] == 0
 
     def test_mp_metal_relax_set(self):
         mp_metal_set = MPMetalRelaxSet(self.get_structure("Sn"))
@@ -633,7 +633,7 @@ class TestMITMPRelaxSet(PymatgenTest):
         #     vis.get_vasp_input()
 
         vis = MPRelaxSet(struct, user_potcar_settings={"Fe": "Fe"}, validate_magmom=True)
-        assert vis.get_vasp_input()["INCAR"]["MAGMOM"] == [1.0] * len(struct)
+        assert vis.get_vasp_input().incar["MAGMOM"] == [1.0] * len(struct)
 
         # Test the behavior of constraining the net magnetic moment with a non-integer
         struct = self.structure.copy()
@@ -1358,8 +1358,8 @@ class TestMVLSlabSet(PymatgenTest):
         assert vis.incar["AMIX"] == 0.1
 
     def test_bulk(self):
-        incar_bulk = self.d_bulk["INCAR"]
-        poscar_bulk = self.d_bulk["POSCAR"]
+        incar_bulk = self.d_bulk.incar
+        poscar_bulk = self.d_bulk.poscar
 
         assert incar_bulk["ISIF"] == 3
         assert incar_bulk["EDIFF"] == 1e-4
@@ -1367,9 +1367,9 @@ class TestMVLSlabSet(PymatgenTest):
         assert poscar_bulk.structure.formula == self.bulk.formula
 
     def test_slab(self):
-        incar_slab = self.d_slab["INCAR"]
-        poscar_slab = self.d_slab["POSCAR"]
-        potcar_slab = self.d_slab["POTCAR"]
+        incar_slab = self.d_slab.incar
+        poscar_slab = self.d_slab.poscar
+        potcar_slab = self.d_slab.potcar
 
         assert incar_slab["AMIN"] == 0.01
         assert incar_slab["AMIX"] == 0.2
@@ -1382,7 +1382,7 @@ class TestMVLSlabSet(PymatgenTest):
         assert potcar_slab.symbols[0] == "Li_sv"
         assert poscar_slab.structure.formula == self.slab.formula
         # Test auto-dipole
-        dipole_incar = self.d_dipole["INCAR"]
+        dipole_incar = self.d_dipole.incar
         assert dipole_incar["LDIPOL"]
         assert_allclose(dipole_incar["DIPOL"], [0.2323, 0.2323, 0.2165], atol=1e-4)
         assert dipole_incar["IDIPOL"] == 3
@@ -1842,11 +1842,11 @@ class TestMVLGBSet(PymatgenTest):
         self.d_slab = self.slab.get_vasp_input()
 
     def test_bulk(self):
-        incar_bulk = self.d_bulk["INCAR"]
+        incar_bulk = self.d_bulk.incar
         assert incar_bulk["ISIF"] == 3
 
     def test_slab(self):
-        incar_slab = self.d_slab["INCAR"]
+        incar_slab = self.d_slab.incar
         assert incar_slab["ISIF"] == 2
 
     def test_kpoints(self):
