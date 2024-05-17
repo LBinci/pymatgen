@@ -1354,15 +1354,31 @@ class TestVaspInput(PymatgenTest):
 
         copyfile(f"{VASP_OUT_DIR}/CONTCAR_Li2O", f"{self.tmp_path}/CONTCAR_Li2O")
 
-        vi = VaspInput.from_directory(self.tmp_path, optional_files={"CONTCAR_Li2O": Poscar})
+        vasp_in = VaspInput.from_directory(self.tmp_path, optional_files={"CONTCAR_Li2O": Poscar})
 
-        assert vi.incar["ALGO"] == "Damped"
-        assert "CONTCAR_Li2O" in vi
+        assert vasp_in.incar["ALGO"] == "Damped"
+        assert "CONTCAR_Li2O" in vasp_in
 
-        vi.as_dict()
+        vasp_in.as_dict()
 
-        vasp_input = VaspInput.from_dict(vi.as_dict())
+        vasp_input = VaspInput.from_dict(vasp_in.as_dict())
         assert "CONTCAR_Li2O" in vasp_input
+
+    def test_incar(self):
+        assert self.vasp_input.incar == self.vasp_input["INCAR"]
+        assert isinstance(self.vasp_input.incar, Incar)
+
+    def test_kpoints(self):
+        assert self.vasp_input.kpoints == self.vasp_input["KPOINTS"]
+        assert isinstance(self.vasp_input.kpoints, Kpoints)
+
+    def test_poscar(self):
+        assert self.vasp_input.poscar == self.vasp_input["POSCAR"]
+        assert isinstance(self.vasp_input.poscar, Poscar)
+
+    def test_potcar(self):
+        assert self.vasp_input.potcar == self.vasp_input["POTCAR"]
+        assert isinstance(self.vasp_input.potcar, Potcar)
 
 
 def test_potcar_summary_stats() -> None:
